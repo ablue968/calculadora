@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('../partials/head'); %>
+</head>
+<body>
+    <header>
+        <%- include('../partials/header'); %>
+    </header>
+<body>
+    <div class="container">
+        <h1>Operacion con ID <a href="/?id=<%-calculo.id%>"><%-calculo.id%></a></h1>
+        <small>haciendo click en ID vuelves a Home a continuar la operación</small>
+    </div>
+    <p>operación realizada: <%-calculo.operation%></p>
+    <p>numero recibido: <%-calculo.num%></p>
+    <p>resultado de la operacion: <%=resultado%></p>
+    
+    
+</body>
+</html>
