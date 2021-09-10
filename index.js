@@ -2,8 +2,7 @@ const express = require('express');
 const app     = express();
 const port    = 3000;
 
-let tiempo            = 0;
-const datos           = [];
+let datos             = [];
 const ids             = new Map();
 const valor           = new Map();
 
@@ -17,12 +16,19 @@ app.use(express.json())
 //seting the view engine
 app.set('view engine', 'ejs');
 
+app.listen(port, ()=>{
+    console.log(`Server on port ${port}`)
+
+
+});
+
+
 //main page
 app.get('/',(req,res)=>{
     res.render('pages/main',{
-        id: req.query.id || ""
-    });
-    
+        id: req.query.id || "",
+        msg: ""
+    });    
 })
 
 app.post('/calculate',(req,res)=>{
@@ -31,71 +37,69 @@ app.post('/calculate',(req,res)=>{
     const operation = req.body.operation;
 
     ids.set(id,new Date()); //fecha por id
-    var valorLocal= valor.get(id)
+
+
+    //-------USO DE VAR --------//
+    var valorLocal= valor.get(id)  
+    //-------          --------//
 
     if(isNaN(valorLocal)){
-        console.log('no existe esa id aún')
+        //damos un valor inicial en el caso de no existir registro de id
         valorLocal = 0
-        // let localStorageValue = 0;
-        // const data = valor.set(id, localStorageValue);
-        // //localStorage.setItem('data',JSON.stringify(data));
     }
     if( isNaN(id) || isNaN(num)){
-        console.log('no es un número')
         res.render('pages/error',{
          error: 'La ID o el número, no parecen ser correctos.. revisa los datos'   
         })
 
     }
     if( num == 0 && operation == 'div'){
-        console.log('no puedes hacer esto')
         res.render('pages/error',{
             error: 'No podemos dividir entre 0 ¿Tú sí?'   
            })
         return
     }
-
+    
     datos.push(id,{operation: operation, num: num, fecha: new Date()});
 
+
     switch(operation){
-        case 'suma':
+        case '+':
             valorLocal+=num;
             break;
-        case 'resta':
+        case '-':
             valorLocal-=num;
             break;
-        case 'multi':
+        case '*':
             valorLocal*=num;
             break;
-        case 'div':
+        case '/':
             valorLocal/=num;
             break;
+        case 'Reset':
+            clearById(id);
+            res.render('pages/main',{
+                id,
+                msg: `reseteado los valores de ${id}`
+            })
+            return;
     }
     valor.set(id,valorLocal);
     let resultado = valorLocal;
-    let logstr= "";
-    datos.forEach( v =>{
-        this.logstr = this.logstr + v.operation+ " " + v.num;
-    })
-    log=logstr;
-    console.log('log', log);
-    console.log('resultado', resultado);
-    console.log(datos);
 
     
     res.render('pages/calculate',{
-    calculo: {id, operation, num}, 
-    log, 
+    calculo: {id, operation, num},  
     resultado})
-    console.log('calculo', calculo)
-    
-
 })
 
+function clearById(id){
+    //los new Map buscan por clave (id en este caso)
+    ids.delete(id);
+    valor.delete(id);
+}
 
-app.listen(port, ()=>{
-    console.log(`Server on port ${port}`)
-});
+
 
 
 

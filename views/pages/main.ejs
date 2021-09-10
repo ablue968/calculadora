@@ -10,21 +10,25 @@
 
     <main>
         <div class="jumbotron">
-            <h1>This is great</h1>
+            <h1>Calculadora</h1>
             <form method="POST" action="/calculate" class="input-group">
-                <input type="text" class="form-control" placeholder="Indíca la ID" name="id" value=<%-id%> required >
-                <input type="text" class="form-control" placeholder="Ingresa el número" name="num" required>
+                <input type="text" class="form-control col-2" placeholder="Indíca la ID" name="id" value="<%=id%>" required >
+                <input type="text" class="form-control" placeholder="Ingresa el número" name="num" value="0" required>
                 <div class="input-group-append" id="button-addon4">
                     <select name="operation">
-                        <option value="suma" selected>Suma</option>
-                        <option value="resta">Resta</option>
-                        <option value="multi">Multi</option>
-                        <option value="div">Div</option>
+                        <option class="text-center" value="+" selected>Suma</option>
+                        <option class="text-center" value="-">Resta</option>
+                        <option class="text-center" value="*">Multi</option>
+                        <option class="text-center" value="/">Div</option>
+                        <option class="text-center" value="Reset">Reset all data</option>
                     </select>
                     <button class="btn btn-outline-secondary" type="submit">Send</button>
                 </div>
+                <div>&nbsp;</div>
+                <button class="btn btn-outline-danger" type="reset">Reset</button>
             </form>
         </div>
+        <p><%= msg %></p>
     </main>
     <footer>
         <%- include('../partials/footer'); %>
