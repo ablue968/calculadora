@@ -36,6 +36,8 @@ app.post('/calculate',(req,res)=>{
     const num = Number(req.body.num);
     const operation = req.body.operation;
 
+    let hitorico = ""
+
     ids.set(id,new Date()); //fecha por id
 
 
@@ -59,7 +61,7 @@ app.post('/calculate',(req,res)=>{
            })
         return
     }
-    
+
     datos.push(id,{operation: operation, num: num, fecha: new Date()});
 
 
@@ -86,10 +88,19 @@ app.post('/calculate',(req,res)=>{
     }
     valor.set(id,valorLocal);
     let resultado = valorLocal;
+    
+
+    for ( registro in datos){
+        let r = datos[registro]
+        if(r.id==id){
+            hitorico +=` ${r.operation} ${r.num} `
+        }
+    }
 
     
     res.render('pages/calculate',{
     calculo: {id, operation, num},  
+    hitorico,
     resultado})
 })
 
